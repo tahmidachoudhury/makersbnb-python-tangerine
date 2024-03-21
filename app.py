@@ -36,6 +36,12 @@ def allowed_file(filename):
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5000/index
+@app.route('/', methods=['GET'])
+def root_page():
+    return render_template('login.html')
+    
+
+
 @app.route('/index', methods=['GET'])
 def get_index():
     connection = get_flask_database_connection(app)

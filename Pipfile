@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 pytest = "*"
 psycopg = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 gunicorn = "*"
 flask = "*"
 pytest-playwright = "*"

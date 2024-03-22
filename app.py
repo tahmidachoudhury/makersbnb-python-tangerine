@@ -36,9 +36,26 @@ def allowed_file(filename):
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5000/index
+
+# login and root page
 @app.route('/', methods=['GET'])
-def root_page():
+def get_login_page():
     return render_template('login.html')
+
+@app.route('/', methods=['POST'])
+def post_login():
+    connection = get_flask_database_connection(app)
+    user_repository = UserRepository(connection)
+    username = request.form['username']
+    password = request.form['password']
+    session['user'] = username
+    #session['user_id'] = user_repository.find_by_username(username)
+    if user_repository.login(username, password) == False:
+        error_message = 'Username or password do not match, please try again.'
+        signup_prompt = "Don't have an account? Sign up!"
+        return render_template('login.html', error_message=error_message, signup_prompt=signup_prompt)
+    else:
+        return redirect('/index')
     
 
 
@@ -167,25 +184,6 @@ def reject_booking(booking_id):
     space = spaces_repository.find(space_id)
     return redirect(url_for('get_unapproved_and_approved_bookings_by_space', space_name=space.name, space_id=space.id))
 
-# login page
-@app.route('/login', methods=['GET'])
-def get_login_page():
-    return render_template('login.html')
-
-@app.route('/login', methods=['POST'])
-def post_login():
-    connection = get_flask_database_connection(app)
-    user_repository = UserRepository(connection)
-    username = request.form['username']
-    password = request.form['password']
-    session['user'] = username
-    #session['user_id'] = user_repository.find_by_username(username)
-    if user_repository.login(username, password) == False:
-        error_message = 'Username or password do not match, please try again.'
-        signup_prompt = "Don't have an account? Sign up!"
-        return render_template('login.html', error_message=error_message, signup_prompt=signup_prompt)
-    else:
-        return redirect('/index')
     
     
 

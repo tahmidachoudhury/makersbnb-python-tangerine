@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#install dependancies 
+pipenv install
+
 # Start PostgreSQL server
 echo "Starting PostgreSQL server..."
 sudo service postgresql start  # Adjust this command based on your environment
